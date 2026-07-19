@@ -5,6 +5,9 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const expenseRoutes = require("./routes/expenseRoutes");
 const incomeRoutes = require("./routes/incomeRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+
 const app = express();
 
 // Connect to MongoDB
@@ -14,7 +17,8 @@ app.use(express.json());
 
 app.use("/api/expense", expenseRoutes);
 app.use("/api/income", incomeRoutes);
-//addIncome
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/report", reportRoutes);
 
 // Default Route
 app.get("/", (req, res) => {
