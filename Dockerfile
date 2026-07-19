@@ -1,7 +1,7 @@
 #Step 1 Use node js image
 FROM node:22-alpine
 
-#Create and set the working directory
+#Create and set the working directory dir
 WORKDIR /app
 
 #Copy package files first for better docker layer & caching
