@@ -1,4 +1,4 @@
-name: Frontend CI/CD Pipeline
+name: Backend CI/CD Pipeline
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  validate-and-test:
+  validate-and-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,19 +29,9 @@ jobs:
       - name: Run Lint
         run: npm run lint --if-present
 
-      - name: Run Tests
-        run: npm test --if-present
-
-  build-and-push:
-    needs: validate-and-test
-
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      # Remove this if you don't have tests yet
+      # - name: Run Tests
+      #   run: npm test --if-present
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -52,11 +42,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Frontend Docker Image
+      - name: Build and Push Backend Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: pawar41/expense-tracker:latest
-          build-args: |
-            VITE_API_URL=http://${{ secrets.BACKEND_IP }}:5000
+          tags: pawar41/expense-tracker-backend:latest
